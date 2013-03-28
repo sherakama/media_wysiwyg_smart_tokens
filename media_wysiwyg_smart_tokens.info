@@ -1,0 +1,10 @@
+name = Media + Wysiwyg Smart Tokens
+description = Changes the way media handles the conversion of markup to json strings in the wysiwyg editor so that it may handle more then just img tags.
+core = 7.x
+package = OpenEDU
+version = 7.x-1.0
+project = media_wysiwyg_smart_tokens
+dependencies[] = media
+
+
+

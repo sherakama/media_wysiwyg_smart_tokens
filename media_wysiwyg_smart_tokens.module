@@ -1,0 +1,53 @@
+<?php
+/**
+ * @file
+ * Code fo tha betta
+ */
+
+
+/**
+ * Implements hook_element_info_alter().
+ */
+function media_wysiwyg_smart_tokens_element_info_alter(&$types) {
+  $types['text_format']['#pre_render'][] = 'media_wysiwyg_smart_tokens_pre_render_text_format';
+}
+
+
+/**
+ * Process function for adding necessary js to the editor.
+ */
+function media_wysiwyg_smart_tokens_pre_render_text_format($element) {
+
+  $path = drupal_get_path('module', 'media_wysiwyg_smart_tokens');
+  drupal_add_js($path . '/js/media_wysiwyg_smart_tokens.js', array('scope' => 'footer'));
+
+  return $element;
+}
+
+/**
+ * [media_wysiwyg_smart_tokens_media_token_to_markup_alter description]
+ * @param  [type] $element  [description]
+ * @param  [type] $tag_info [description]
+ * @param  [type] $settings [description]
+ * @return [type]           [description]
+ */
+function media_wysiwyg_smart_tokens_media_token_to_markup_alter(&$element, $tag_info, $settings) {
+
+  // $element['#theme'] = "entity";
+  // $element['#view_mode'] = 'default';
+
+  // if (!$element['#file']) {
+  //   $element['#file'] = $element['content']['file']['#file'];
+  // }
+
+  // list($id, $rvid, $bundle) = entity_extract_ids('file', $element['#file']);
+  // $element['#entity_type'] = $bundle;
+
+  // if ($bundle == "image") {
+  //   $element['#file']->path = $element['#file']->uri;
+  // }
+
+  // $element['#entity'] = $element['#file'];
+  // dpm($element);
+
+}
