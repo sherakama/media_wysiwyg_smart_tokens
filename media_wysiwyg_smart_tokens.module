@@ -18,8 +18,17 @@ function media_wysiwyg_smart_tokens_element_info_alter(&$types) {
  */
 function media_wysiwyg_smart_tokens_pre_render_text_format($element) {
 
-  $path = drupal_get_path('module', 'media_wysiwyg_smart_tokens');
-  drupal_add_js($path . '/js/media_wysiwyg_smart_tokens.js', array('scope' => 'footer'));
+  // Load our handling of media tokens into the editor.
+  if (module_exists('wysiwyg')) {
+    $path = drupal_get_path('module', 'media_wysiwyg_smart_tokens');
+    drupal_add_js($path . '/js/media_wysiwyg_smart_tokens.js', array('scope' => 'footer'));
+  }
+
+  // Load our handling of media tokens into the editor.
+  if (module_exists('ckeditor')) {
+    $path = drupal_get_path('module', 'media_wysiwyg_smart_tokens');
+    drupal_add_js($path . '/js/media_ckeditor_smart_tokens.js', array('scope' => 'footer', 'weight' => -19));
+  }
 
   return $element;
 }

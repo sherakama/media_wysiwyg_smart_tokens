@@ -1,7 +1,7 @@
 (function ($) {
     /**
-    Override the default enable/disable wysiwyg text editor functionality from
-    the media module with custom handlers to be able to support tokens and
+    Override the default enable/disable ckeditor text editor functionality from
+    the ckeditor module with custom handlers to be able to support tokens and
     markup for all file types complex markup. **/
 
 
@@ -9,12 +9,16 @@
   // ATTACH!
   // ///////////////////////////////////////////////////////////////////////////
 
+  Drupal.media = Drupal.media || {};
+
+  Drupal.settings.media.wysiwyg_allowed_attributes = ["height", "width", "hspace", "vspace", "border", "align", "style", "alt", "title", "class", "id"];
+
   // Only run if plugins is available.
-  if (typeof Drupal.wysiwyg == "undefined") {
+  if (typeof Drupal.settings.ckeditor.plugins['media'] == "undefined") {
     return;
   }
 
-  Drupal.wysiwyg.plugins.media.attach = function(content, settings, instanceId) {
+  Drupal.settings.ckeditor.plugins['media'].attach = function(content) {
 
     var tagmap = Drupal.settings.tagmap,
         matches = content.match(/\[\[.*?\]\]/g),
@@ -48,7 +52,10 @@
       }
     }
 
+    console.log(tagmap);
+
     return content;
+
   };
 
 
@@ -56,47 +63,23 @@
   // DETACH THE WYSIWYG EDITOR // //////////////////////////////////////////////
   //////////////////////////////////////////////////////////////////////////////
 
-  Drupal.wysiwyg.plugins.media.detach = function(content, settings, instanceId) {
+  Drupal.settings.ckeditor.plugins['media'].detach = function(content) {
+
     ensure_tagmap();
     var tagmap = Drupal.settings.tagmap,
         i = 0,
         markup,
         macro;
 
-    // Replace all media placeholders with their JSON macro representations.
-    //
-    // There are issues with using jQuery to parse the WYSIWYG content (see
-    // http://drupal.org/node/1280758), and parsing HTML with regular
-    // expressions is a terrible idea (see http://stackoverflow.com/a/1732454/854985)
-    //
-    // WYSIWYG editors act wacky with complex placeholder markup anyway, so an
-    // image is the most reliable and most usable anyway: images can be moved by
-    // dragging and dropping, and can be resized using interactive handles.
-    //
-    // Media requests a WYSIWYG place holder rendering of the file by passing
-    // the wysiwyg => 1 flag in the settings array when calling
-    // media_get_file_without_label().
 
-    // var matches = content.match(/<img[^>]+class=[\'"]([^"']+ )?media-element[^>]*>/gi);
-    // if (matches) {
-    //   for (i = 0; i < matches.length; i++) {
-    //     markup = matches[i];
-    //     macro = create_macro($(markup));
-    //     tagmap[macro] = markup;
-    //     content = content.replace(markup, macro);
-    //   }
-    // }
-
-    // Ok So the above says you can't use regex to parse html without putting
-    // the world into some unholy apocalypse. Lets use jquery! Jquery will be
-    // our saviour from Tony the Pony.
+    console.log(content);
 
     $content = $("<div class=\"root\" />").append($(content));
 
     // Find all nested in html items.
     var matches = $content.find('.media-element');
 
-    // Loop through the nested items
+    // Loop through the nested items.
     $.each(matches, function(i, v) {
 
       var element = $(v);
@@ -108,11 +91,22 @@
     });
 
     return outerHTML($content.contents());
+
   };
 
-//////////////////////////////////////////////////////////////////////////////
-// HELPERS // //////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////
+  // INSERT // //////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////
+
+  Drupal.settings.ckeditor.plugins['media'].insertMediaFile = function(mediaFile, viewMode, formattedMedia, options, ckeditorInstance) {
+    toInsert = formattedMedia;
+    ckeditorInstance.insertHtml(toInsert);
+  };
+
+
+  //////////////////////////////////////////////////////////////////////////////
+  // HELPERS // //////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////
 
 
 /**
@@ -138,10 +132,12 @@ function create_element (html, info) {
   // Move attributes from the file info array to the placeholder element.
   if (info.attributes) {
     $.each(Drupal.settings.media.wysiwyg_allowed_attributes, function(i, a) {
+
       if (info.attributes[a]) {
         element.attr(a, info.attributes[a]);
       }
     });
+
     delete(info.attributes);
   }
 
@@ -158,6 +154,7 @@ function create_element (html, info) {
   if(info.view_mode){
     classes.push('file-' + info.view_mode.replace(/_/g, '-'));
   }
+
   element.addClass(classes.join(' '));
 
   return element;
@@ -200,9 +197,7 @@ function extract_file_info (element) {
 
     // Extract whitelisted attributes.
     $.each(Drupal.settings.media.wysiwyg_allowed_attributes, function(i, a) {
-      if (value == element.attr(a)) {
-        file_info.attributes[a] = value;
-      }
+      file_info.attributes[a] = element.attr(a);
     });
     delete(file_info.attributes['data-file_info']);
   }
