@@ -52,8 +52,6 @@
       }
     }
 
-    console.log(tagmap);
-
     return content;
 
   };
@@ -70,9 +68,6 @@
         i = 0,
         markup,
         macro;
-
-
-    console.log(content);
 
     $content = $("<div class=\"root\" />").append($(content));
 
@@ -213,7 +208,6 @@ function extract_file_info (element) {
 function outerHTML (element) {
   return $('<div>').append(element.clone()).html();
 }
-
 
 
 })(jQuery);

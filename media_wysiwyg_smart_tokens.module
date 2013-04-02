@@ -60,3 +60,5 @@ function media_wysiwyg_smart_tokens_media_token_to_markup_alter(&$element, $tag_
   // dpm($element);
 
 }
+
+

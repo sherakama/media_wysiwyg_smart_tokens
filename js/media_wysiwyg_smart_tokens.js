@@ -145,8 +145,6 @@ function create_element (html, info) {
     delete(info.attributes);
   }
 
-  $attr = element[0].attributes;
-
   // Important to url-encode the file information as it is being stored in an
   // html data attribute.
   info.type = info.type || "media";
@@ -158,6 +156,7 @@ function create_element (html, info) {
   if(info.view_mode){
     classes.push('file-' + info.view_mode.replace(/_/g, '-'));
   }
+
   element.addClass(classes.join(' '));
 
   return element;
@@ -200,10 +199,14 @@ function extract_file_info (element) {
 
     // Extract whitelisted attributes.
     $.each(Drupal.settings.media.wysiwyg_allowed_attributes, function(i, a) {
-      if (value == element.attr(a)) {
-        file_info.attributes[a] = value;
+
+      var attr = element.attr(a);
+      if (typeof attr !== null) {
+        file_info.attributes[a] = attr;
       }
+
     });
+
     delete(file_info.attributes['data-file_info']);
   }
 
@@ -218,6 +221,10 @@ function extract_file_info (element) {
 function outerHTML (element) {
   return $('<div>').append(element.clone()).html();
 }
+
+
+
+
 
 
 
