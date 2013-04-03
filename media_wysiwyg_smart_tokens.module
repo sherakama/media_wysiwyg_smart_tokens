@@ -62,3 +62,41 @@ function media_wysiwyg_smart_tokens_media_token_to_markup_alter(&$element, $tag_
 }
 
 
+/**
+ * Implements hook_wysiwyg_editor_settings_alter()
+ */
+function media_wysiwyg_smart_tokens_wysiwyg_editor_settings_alter(&$settings, $context) {
+
+  // The $context variable contains information about the wysiwyg profile we're using
+  // In this case we just need to check that the editor being used is ckeditor.
+  if ($context['profile']->editor == 'ckeditor') {
+
+  }
+
+}
+
+/**
+ * [my_module_wysiwyg_plugin description]
+ * @param  [type] $editor  [description]
+ * @param  [type] $version [description]
+ * @return [type]          [description]
+ */
+function media_wysiwyg_smart_tokens_wysiwyg_plugin($editor, $version) {
+
+  /* TEMPORARY DISABLED UNTIL I GET IT COMPLETE */
+
+  // switch ($editor) {
+  //  case 'ckeditor':
+  //   return array(
+  //    'media_placeholder' => array(
+  //     'path' => drupal_get_path('module', 'media_wysiwyg_smart_tokens') . '/js',
+  //     'buttons' => array(
+  //      'media_placeholder_button' => t('Media Smart Tokens'),
+  //     ),
+  //     'load' => TRUE,
+  //    ),
+  //   );
+  //   break;
+  // }
+
+ }
