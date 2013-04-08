@@ -1,0 +1,18 @@
+.media-element {
+  border: dotted 1px #003399;
+  display: table-cell;
+}
+.field-item,
+.field {
+  border: dotted 1px #009933;
+}
+
+.media-image-right {
+  float: right;
+  display: block;
+}
+
+.media-image-left {
+  float: left;
+  display: block;
+}

@@ -4,15 +4,15 @@ CKEDITOR.plugins.add( 'media_placeholder', {
   init: function( editor )
   {
 
-    // editor.on('key', function(evt) {
-    //   var sel = editor.getSelection();
-    //   var element = sel.getStartElement();
-    //   console.log(element);
-    //   if (element.hasClass('field') || element.hasClass('field-item')) {
-    //     var parents = element.getParents();
-    //     console.log(parents);
-    //   }
-    // });
+    editor.on('selectionChange', function(evt) {
+      var sel = editor.getSelection();
+      var element = sel.getStartElement();
+      console.log(element);
+       if (element.hasClass('media-element')) {
+         element.isEditable(true);
+         element.removeAttributes('contenteditable');
+       }
+    });
 
     editor.on('instanceReady', function(evt) {
 
@@ -52,3 +52,4 @@ CKEDITOR.plugins.add( 'media_placeholder', {
 
   }
 });
+
