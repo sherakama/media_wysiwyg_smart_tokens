@@ -91,6 +91,9 @@ function media_wysiwyg_smart_tokens_wysiwyg_plugin($editor, $version) {
       'path' => drupal_get_path('module', 'media_wysiwyg_smart_tokens') . '/js',
       'buttons' => array(
        'media_placeholder_button' => t('Media Smart Tokens'),
+       'media_element_left' => t('Media Left'),
+       'media_element_right' => t('Media Right'),
+       'media_element_inline' => t('Media Inline'),
       ),
       'load' => TRUE,
      ),

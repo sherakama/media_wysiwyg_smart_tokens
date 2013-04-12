@@ -1,11 +1,17 @@
 .media-element {
-  border: dotted 1px #003399;
+  border: dotted 1px #FFF;
   display: table-cell;
 }
-.field-item,
-.field {
-  border: dotted 1px #009933;
+.media-element:focus,
+.media-element:active  {
+  border: dotted 1px #FF00FF;
 }
+
+/* .field-item,
+   .field {
+     border: dotted 1px #009933;
+   }
+*/
 
 .media-image-right {
   float: right;
