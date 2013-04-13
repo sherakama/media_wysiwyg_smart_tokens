@@ -224,8 +224,4 @@ function outerHTML (element) {
 
 
 
-
-
-
-
 })(jQuery);

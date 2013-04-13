@@ -6,6 +6,16 @@
 
 
 /**
+ * Implements hook_init().
+ */
+function media_wysiwyg_smart_tokens_init() {
+    /**
+     * Add css stylesheet to the front pages so that the editor styles match the wysiwyg.
+     */
+   drupal_add_css(drupal_get_path('module', 'media_wysiwyg_smart_tokens') . '/css/display.css');
+}
+
+/**
  * Implements hook_element_info_alter().
  */
 function media_wysiwyg_smart_tokens_element_info_alter(&$types) {
@@ -42,22 +52,6 @@ function media_wysiwyg_smart_tokens_pre_render_text_format($element) {
  */
 function media_wysiwyg_smart_tokens_media_token_to_markup_alter(&$element, $tag_info, $settings) {
 
-  // $element['#theme'] = "entity";
-  // $element['#view_mode'] = 'default';
-
-  // if (!$element['#file']) {
-  //   $element['#file'] = $element['content']['file']['#file'];
-  // }
-
-  // list($id, $rvid, $bundle) = entity_extract_ids('file', $element['#file']);
-  // $element['#entity_type'] = $bundle;
-
-  // if ($bundle == "image") {
-  //   $element['#file']->path = $element['#file']->uri;
-  // }
-
-  // $element['#entity'] = $element['#file'];
-  // dpm($element);
 
 }
 

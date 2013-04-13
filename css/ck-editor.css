@@ -1,6 +1,9 @@
 .media-element {
   border: dotted 1px #FFF;
-  display: table-cell;
+  display: inline-block;
+  *zoom: 1;
+  *display: inline;
+  position: relative;
 }
 .media-element:focus,
 .media-element:active  {
@@ -15,10 +18,28 @@
 
 .media-image-right {
   float: right;
-  display: block;
 }
 
 .media-image-left {
   float: left;
+}
+
+.leftspacer,
+.rightspacer {
+  position: absolute;
+  width: 10px;
+  background: #FEE;
+  height: 100%;
   display: block;
+  top: 0px;
+  font-size: 1px;
+  cursor: pointer;
+}
+
+.leftspacer {
+  left: 0px;
+}
+
+.rightspacer {
+  right: 0px;
 }
