@@ -52,9 +52,57 @@ function media_wysiwyg_smart_tokens_pre_render_text_format($element) {
  */
 function media_wysiwyg_smart_tokens_media_token_to_markup_alter(&$element, $tag_info, $settings) {
 
+    // If we are in the wyswiyg editor we need to add the additional fields
+    // to the markup as it only renders the image 'as is'.
+
+    if (isset($settings['wysiwyg']) && $settings['wysiwyg']) {
+      $element['#theme'] = "smart_tokens_wysiwyg_theme_hijack";
+    }
 
 }
 
+/**
+ * Implements hook_theme().
+ */
+function media_wysiwyg_smart_tokens_theme() {
+  return array(
+    'smart_tokens_wysiwyg_theme_hijack' => array(
+      'variables' => array(
+        'file' => NULL,
+        'attributes' => array(),
+        'view_mode' => 'default',
+      ),
+    ),
+  );
+}
+
+/**
+ * Provides file entity rendering display for wysiwyg content.
+ * @param  [type] $variables [file view mode and file attributes]
+ * @return [type]            [the rendered entity html wrapped in a div]
+ */
+function theme_smart_tokens_wysiwyg_theme_hijack($variables) {
+
+  $file = $variables['file'];
+  file_build_content($file, $variables['view_mode']);
+  unset($file->content['links']);
+
+  if (!isset($file->content['#prefix'])) {
+    $file->content['#prefix'] = "<div ";
+
+    foreach ($file->override['attributes'] as $k => $v) {
+      $value = is_array($v) ? implode($v, " ") : $v;
+      $file->content['#prefix'] .= $k . "=\"" . $value . "\" ";
+    }
+
+    $file->content['#prefix'] .= ">";
+    $file->content['#suffix'] = "</div>";
+  }
+
+  $content = drupal_render($file->content);
+  return $content;
+
+}
 
 /**
  * Implements hook_wysiwyg_editor_settings_alter()
