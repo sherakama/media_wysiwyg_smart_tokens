@@ -1,3 +1,9 @@
+/**
+ * @file
+ *
+ * @Todo: Reduce redundant code. Ungh bad. -Shea.
+ */
+
 CKEDITOR.config.autoParagraph = false;
 
 CKEDITOR.plugins.add( 'media_placeholder', {
@@ -49,28 +55,44 @@ CKEDITOR.plugins.add( 'media_placeholder', {
       var medias = jQuery(editor.document.$).find('.media-element');
       medias.css('background', 'transparent');
 
-      var arr = editor.document.$.getElementsByTagName("div");
-      for (i = 0; i < arr.length; i++) {
-         var cl = arr[i].getAttribute('class');
-         if (cl.match(/media-element/ig)) {
+      jQuery.each(medias, function (i, mediaelement) {
 
-          // Parent.
-          arr[i].setAttribute('contenteditable', 'false');
-          var parent = new CKEDITOR.dom.element(arr[i]);
-          parent.unselectable();
+        var parent = new CKEDITOR.dom.element(mediaelement);
+        parent.unselectable();
 
-          // Children Items.
-          var children = arr[i].children;
+        var children = mediaelement.children;
 
-          for (j = 0; j < children.length; j++){
-            var child = children[j];
-            child.setAttribute('contenteditable', 'false');
-            var element = new CKEDITOR.dom.element(child);
-            element.unselectable();
-          }
-
+        for (j = 0; j < children.length; j++){
+          var child = children[j];
+          child.setAttribute('contenteditable', 'false');
+          var element = new CKEDITOR.dom.element(child);
+          element.unselectable();
         }
-      }
+
+      });
+
+      // var arr = editor.document.$.getElementsByTagName("div");
+      // for (i = 0; i < arr.length; i++) {
+      //    var cl = arr[i].getAttribute('class');
+      //    if (cl.match(/media-element/ig)) {
+
+      //     // Parent.
+      //     arr[i].setAttribute('contenteditable', 'false');
+      //     var parent = new CKEDITOR.dom.element(arr[i]);
+      //     parent.unselectable();
+
+      //     // Children Items.
+      //     var children = arr[i].children;
+
+      //     for (j = 0; j < children.length; j++){
+      //       var child = children[j];
+      //       child.setAttribute('contenteditable', 'false');
+      //       var element = new CKEDITOR.dom.element(child);
+      //       element.unselectable();
+      //     }
+
+      //   }
+      // }
 
     editor.updateElement();
 
@@ -80,9 +102,14 @@ CKEDITOR.plugins.add( 'media_placeholder', {
 
     // Remove backgrounds when not on focus.
     editor.on('blur', function(evt) {
-      var medias = jQuery(editor.document.$).find('.media-element');
-      medias.css('background', 'transparent');
-      editor.updateElement();
+      try {
+        var medias = jQuery(evt.editor.document.$).find('.media-element');
+        medias.css('background', 'transparent');
+        destroySpaceMedia(jQuery(evt.editor.document.$));
+        editor.updateElement();
+      } catch(err) {
+        // editor must be disabled. Thats fine.
+      }
     });
 
     // BEFORE SAVE /////////////////////////////////////////////////////////////
@@ -98,6 +125,7 @@ CKEDITOR.plugins.add( 'media_placeholder', {
     editor.on('beforeModeUnload', function(evt) {
       var medias = jQuery(editor.document.$).find('.media-element');
       medias.css('background', 'transparent');
+      destroySpaceMedia(jQuery(evt.editor.document.$));
       editor.updateElement();
     });
 
@@ -106,6 +134,7 @@ CKEDITOR.plugins.add( 'media_placeholder', {
       jQuery.each(CKEDITOR.instances, function (i, v) {
         var editor = v;
         var medias = jQuery(editor.document.$).find('.media-element');
+        destroySpaceMedia(jQuery(evt.editor.document.$));
         medias.css('background', 'transparent');
       });
     });
