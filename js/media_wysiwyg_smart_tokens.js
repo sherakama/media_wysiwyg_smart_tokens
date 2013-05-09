@@ -91,7 +91,8 @@
     // the world into some unholy apocalypse. Lets use jquery! Jquery will be
     // our saviour from Tony the Pony.
 
-    $content = $("<div class=\"root\" />").append($(content));
+    //$content = $("<div class=\"root\" />").append($(content));
+    $content = $("<div class=\"root\">" + content + "</div>");
 
     // Find all nested in html items.
     var matches = $content.find('.media-element');
