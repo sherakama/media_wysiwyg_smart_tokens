@@ -69,7 +69,8 @@
         markup,
         macro;
 
-    $content = $("<div class=\"root\" />").append($(content));
+    // $content = $("<div class=\"root\" />").append($(content));
+    $content = $("<div class=\"root\">" + content + "</div>");
 
     // Find all nested in html items.
     var matches = $content.find('.media-element');
