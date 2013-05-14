@@ -84,13 +84,13 @@ function media_wysiwyg_smart_tokens_theme() {
 function theme_smart_tokens_wysiwyg_theme_hijack($variables) {
 
   $file = $variables['file'];
-  file_build_content($file, $variables['view_mode']);
+  file_build_content($file, 'full');
   unset($file->content['links']);
 
   if (!isset($file->content['#prefix'])) {
     $file->content['#prefix'] = "<div ";
 
-    foreach ($file->override['attributes'] as $k => $v) {
+    foreach ($variables['attributes'] as $k => $v) {
       $value = is_array($v) ? implode($v, " ") : $v;
       $file->content['#prefix'] .= $k . "=\"" . $value . "\" ";
     }
