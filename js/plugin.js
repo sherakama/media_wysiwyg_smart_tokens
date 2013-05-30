@@ -123,10 +123,12 @@ CKEDITOR.plugins.add( 'media_placeholder', {
 
     // Remove backgrounds before unloading.
     editor.on('beforeModeUnload', function(evt) {
-      var medias = jQuery(editor.document.$).find('.media-element');
-      medias.css('background', 'transparent');
-      destroySpaceMedia(jQuery(evt.editor.document.$));
-      editor.updateElement();
+      if(editor.document) {
+        var medias = jQuery(editor.document.$).find('.media-element');
+        medias.css('background', 'transparent');
+        destroySpaceMedia(jQuery(evt.editor.document.$));
+        editor.updateElement();
+      }
     });
 
     // Remove all backgrounds when the form is submitted.
